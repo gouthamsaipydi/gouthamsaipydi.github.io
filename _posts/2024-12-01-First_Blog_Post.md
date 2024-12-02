@@ -2,7 +2,7 @@
 layout: post
 title: "What If?"
 date: 2024-12-01
-tags: [jekyll, blog]
+tags: []
 categories: [Introduction]
 description: "Hello World"
 featured: true
