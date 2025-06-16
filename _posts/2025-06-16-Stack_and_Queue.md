@@ -21,7 +21,7 @@ I know I made it a bit wordy, the famous 4 letter acronymn LIFO(Last-in First-ou
 
 Now Let's implement it in Python to see its beauty. 
 
-```Python
+```python
 class stack:
     def __init__(self,size):
         if size<=0 or type(size)==float:
