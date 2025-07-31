@@ -26,12 +26,14 @@ We are trying to minimize a "decided" Loss function(with loads of parameters, li
 Note: I'm using *decided*, as the loss depends on the problem we are trying to solve. 
 
 More mathematically, we have an optimization problem as, 
+
 $$\min_{w\in\mathbb{R}^D}E(w)$$
+
 $$w^*=\text{arg} \min_{w\in\mathbb{R}^D}E(w)$$
 
-$w^*$ is the vector, why we are doing all this. It will be our gateway to awesome predictions. 
+$$w^*$$ is the vector, why we are doing all this. It will be our gateway to awesome predictions. 
 
-The Objective function [$E(w)$ above] is usually a super complicated function; by complicated, i mean some function which cannot be solved in closed form($w^*$= some function involving the independent variables), and needs some deep introspection to find its global minima.
+The Objective function $E(w)$ above is usually a super complicated function; by complicated, i mean some function which cannot be solved in closed form($w^*$= some function involving the independent variables), and needs some deep introspection to find its global minima.
 
 There are plenty of iterative methods to solve for the above optimisation problems. Like the Newton Method and all, but the one which has took the world by storm is- Gradient Descent and Stochastic Gradient descent, a clever extension which serves as the basis for training super large neural nets. 
 
@@ -50,11 +52,12 @@ Gradient Ascent $\iff$ used for finding the local maxima of multivariate functio
 
 Let me walk you through a short lecture on gradients, 
 
-For a Multi-Variable function $F(x)$ defined and differentiable in a neighborhood of a point $a$, then $F(x)$ increases the fastest if one goes from $a$ in the direction of the gradient of $F$ at $a$ i.e., $\frac{\partial F}{\partial x}{\Large |}_{x=a}$
+For a Multi-Variable function $$F(x)$$ defined and differentiable in a neighborhood of a point $a$, then $F(x)$ increases the fastest if one goes from $a$ in the direction of the gradient of $F$ at $a$ i.e., $\frac{\partial F}{\partial x}{\Large |}_{x=a}$
 
 In simple English, a recursive operation to look for the local minimum of seemingly daunting functions. 
 
 Idea is that we use iterative methods to solve the optimization problem, 
+
 $$w^{(0)}\rightarrow w^{(1)}... \rightarrow w^{(\infty)}=w^\star$$
 
 We'll be initializing the weight vector $w^{(0)}$ usually with small random numbers; I'm using the zero index to signify that as our initial guess of optimal parameters. We'll continue using our recursive function to get hold of the minimum. 
@@ -67,25 +70,35 @@ Which one to choose is simply upto the user and the problem that their trying to
 
 Let's jump back to the algorithm, 
 
-<!-- For Example we can initialize them as $w_d^{(0)}\sim$ uniform$[-0.01,0.01]$ : $\forall d$ -->
 
 
-*Notation Alert: The number of training samples  ${(x^{(i)},y^{(i)})}$ is $m$*
+*Notation Alert: The number of training samples*  $$(x^i,y^i)$$ *is* $$m$$
 
 
 > **Example**
-> Eg: $w_d^{(0)}\sim$ uniform$[-0.01,0.01]$ : $\forall d$
+> Eg: $$w_d^{(0)}\sim$$ uniform[-0.01,0.01] : $$\forall d$$
 > Initial weight vector $w^{(0)}$: usually small random numbers. 
 > 
 > For Demonstration purpose, lets assume the squared loss function (the el classico of all loss functions), and later I will work out the details for $L^1$ Loss function as well.  
-> - We are working with a supervised learning algorithm, so there will be a training set of the form,  
->    $T=\{(x^{(1)},y^{(1)}),(x^{(2)},y^{(2)}),...,(x^{(m)},y^{(m)})\}$  
+> - We are working with a supervised learning algorithm, so there will be a training set of the form:
+>
+>$$
+T = \{ (x^{1}, y^{1}), (x^{2}, y^{2}), \ldots, (x^{m}, y^{m}) \}
+$$
+>
 >    where each $x^{(i)}$ is a $p$ dimensional vector $: \forall i$  
 > - Consider the ordinary least square regression model, then the hypothesis function is: $h_{\theta}(x)=\sum_{i=0}^{d}\theta_i x_i=\theta^Tx$ where $x_0=1$  
-> - The $L^2$ Loss function is  $\mathbb{L}(y_i,\hat{y_i})=(y_i-\hat{y_i})^2$  
-> - if we take the sum of all the loss functions over the training set, we get the cost function  
-> - $J(\theta)=\frac{1}{2}\sum_{i=1}^{m}L(y_i,\hat{y_i})=\frac{1}{2}\sum_{i=1}^{m} L(y_i,h_{\theta}(x_i))=\frac{1}{2}\sum_{i=1}^{m} (h_{\theta}(x^{(i)})-y^{(i)})^2$  
+>- The $L^2$ loss function is
 >
+>$$
+\mathbb{L}(y_i, \hat{y}_i) = (y_i - \hat{y}_i)^2
+$$
+>- If we take the sum of all the loss functions over the training set, we get the cost function:
+>
+>$$
+J(\theta) = \frac{1}{2} \sum_{i=1}^m L(y^{(i)}, \hat{y}^{(i)}) = \frac{1}{2} \sum_{i=1}^m L(y^{(i)}, h_{\theta}(x^{(i)})) = \frac{1}{2} \sum_{i=1}^m (h_{\theta}(x^{(i)}) - y^{(i)})^2
+$$
+
 > Now this is Cost Function, we are looking for the values which minimize this function. 
 
 
@@ -95,17 +108,20 @@ Detail to ponder over: Here the half($\frac{1}{2}$) in cost function is added to
 >- Update rule
 	$\theta_j \leftarrow \theta_j +\Delta \theta_j$ with an update $\Delta \theta_j =-\alpha \frac{\partial J(\theta)}{\partial \theta_j}$, element wise for $d=1,...,m$
 >
->for the above $L^2$ Loss function, upon working out the derivative, >we get it as the following, 
+>for the above $L^2$ Loss function, upon working out the derivative, we get it as the following,
+>
 >$$
 \frac{\partial J(\theta)}{\partial \theta}= \sum_{i=1}^{m} (\theta^T x^{(i)}-y^{(i)})x^{(i)}
 >$$
 >
 >Therefore, the update will become, 
+>
 >$$
 \theta:= \theta + \alpha \sum_{i=1}^m (y^{i}-\theta^T x^{i})x^{i}
 >$$
 >
->To sum it up in vector notation, it will be(for a generic cost >function $J(\theta)$)
+>To sum it up in vector notation, it will be(for a generic cost function $$J(\theta)$$)
+>
 >$$
 \theta :=\theta -\alpha \nabla_\theta J(\theta)
 $$
