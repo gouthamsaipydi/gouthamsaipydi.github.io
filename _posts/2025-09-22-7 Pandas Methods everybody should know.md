@@ -10,7 +10,7 @@ thumbnail:
 ---
 
 Lo and Behold, here i am back with the 7 most important methods in pandas that every data scientist should be aware of. 
-
+    
 Note: I'll be skipping over the basic methods like `head()` and `info()`, coz they are the best. 
 
 1) `describe()`
